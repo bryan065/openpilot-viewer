@@ -2,15 +2,15 @@
 set -euo pipefail
 
 # Configuration
-C3X_IP="192.168.86.85"
+C3X_IP="$C3X_IP"
 C3X_USER="comma"
-SSH_KEY="~/.ssh/opensshkey"
+SSH_KEY="/data/opensshkey"
 REMOTE_DRIVES="/data/media/0/realdata"
-LOCAL_RAW="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/raw"
-LOCAL_STITCHED="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/stitched"
-LOG_FILE="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/logs/c3x_sync.log"
+LOCAL_RAW="/data/raw"
+LOCAL_STITCHED="/data/stitched"
+LOG_FILE="/data/logs/c3x_sync.log"
 
-MIN_FREE_GB=75
+MIN_FREE_GB="$MIN_FREE"
 # End Configuration
 
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"; }

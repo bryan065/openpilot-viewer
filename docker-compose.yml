@@ -5,9 +5,9 @@ services:
     environment:
       SECRET_KEY: ""
       CSRF_TRUSTED_ORIGINS: "http://localhost"
+      C3X_IP: ""
+      MIN_FREE: 100
     volumes:
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/stitched:/data/stitched
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/metadata:/data/metadata
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/raw:/data/raw
+      - /path/to/data/openpilot_viewer:/data
     ports:
       - "80:80"

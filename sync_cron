@@ -1,0 +1,2 @@
+*/15 * * * * flock -n /tmp/c3x_sync.lock /app/c3x_sync.sh > /proc/1/fd/1 2> /proc/1/fd/2
+

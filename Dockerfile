@@ -3,6 +3,10 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     nginx \
     ffmpeg \
+    ssh \
+    rsync \
+    iputils-ping \
+    cron \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -15,6 +19,12 @@ COPY nginx.conf /etc/nginx/sites-enabled/default
 
 RUN mkdir -p /var/run/nginx
 
+RUN chmod +x /app/c3x_sync.sh
+RUN chmod +x /app/startup.sh
+
+ADD sync_cron /etc/cronjob
+RUN crontab /etc/cronjob
+
 EXPOSE 80
 
-CMD ["sh", "-c", "service nginx start && gunicorn openpilot_viewer.wsgi:application --bind 0.0.0.0:8000"]
+ENTRYPOINT ["/app/startup.sh"]
