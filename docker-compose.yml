@@ -1,13 +1,24 @@
 services:
   web:
-    image: bryangerlach/openpilot-viewer:latest
+    image: openpilot-viewer:latest
     restart: unless-stopped
+    entrypoint: ["/app/startup.sh"]
     environment:
       SECRET_KEY: ""
       CSRF_TRUSTED_ORIGINS: "http://localhost"
     volumes:
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/stitched:/data/stitched
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/metadata:/data/metadata
-      - /srv/dev-disk-by-uuid-xxxxxx/openpilot_data/raw:/data/raw
+      - path/to/openpilot_viewer:/data
     ports:
-      - "80:80"
+      - "8999:80"
+
+  cron:
+    image: openpilot-viewer:latest
+    restart: unless-stopped
+    entrypoint: ["/app/startup_cron.sh"]
+    depends_on:
+      - web
+    environment:
+      C3X_IP: ""
+      MIN_FREE: 100
+    volumes:
+      - path/to/openpilot_viewer:/data

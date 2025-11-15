@@ -2,15 +2,15 @@
 set -euo pipefail
 
 # Configuration
-C3X_IP="192.168.86.85"
+C3X_IP="$C3X_IP"
 C3X_USER="comma"
-SSH_KEY="~/.ssh/opensshkey"
+SSH_KEY="/data/ssh/opensshkey"
 REMOTE_DRIVES="/data/media/0/realdata"
-LOCAL_RAW="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/raw"
-LOCAL_STITCHED="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/stitched"
-LOG_FILE="/srv/dev-disk-by-uuid-b502f01f-739c-464b-8f02-8037fe760b79/openpilot_data/logs/c3x_sync.log"
+LOCAL_RAW="/data/raw"
+LOCAL_STITCHED="/data/stitched"
+LOG_FILE="/data/logs/c3x_sync.log"
 
-MIN_FREE_GB=75
+MIN_FREE_GB="$MIN_FREE"
 # End Configuration
 
 log() { echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"; }
@@ -19,6 +19,8 @@ log() { echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"; }
 if ! ping -c 1 -W 2 "$C3X_IP" >/dev/null 2>&1; then
     log "C3X not reachable at $C3X_IP"
     exit 0
+else
+    ssh-keyscan "$C3X_IP" >> $HOME/.ssh/known_hosts
 fi
 
 # FUNCTION: check free space
@@ -129,6 +131,9 @@ for route_id in $routes; do
 
         rm "$filelist"
     done
+
+    # fix/ensure proper permissions for browser
+    chown -R root:www-data "$stitched_path/*"
 
     log "Finished stitching route $route_id"
 done
