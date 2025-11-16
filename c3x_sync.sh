@@ -111,7 +111,7 @@ for route_id in $routes; do
 
         if [ -s "$filelist" ]; then
             log "Stitching $cam -> $output"
-            ffmpeg -y -f concat -safe 0 -i "$filelist" -c copy "$output"
+            ffmpeg -y -f concat -safe 0 -i "$filelist" -r 25 -c copy "$output"
 
             # generate thumbnails
             thumbs_dir="$stitched_path/thumbs/$cam"
