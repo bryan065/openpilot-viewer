@@ -23,6 +23,7 @@ RUN chmod +x /app/c3x_sync.sh
 RUN chmod +x /app/startup.sh
 RUN chmod +x /app/startup_cron.sh
 
-RUN crontab /app/sync_cron
+COPY sync_cron /data/sync_cron
+RUN crontab /data/sync_cron
 
 EXPOSE 80

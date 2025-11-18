@@ -10,9 +10,10 @@ chown -R root:www-data /data/stitched
 printenv | grep -v "no_proxy" >> /etc/environment
 
 # test and update crontab on container start/restart
-if [ -f /data/sync_cron ]; then
+FILE=/data/cron/sync_cron
+if [ -f $FILE ]; then
     echo "Custom crontab found, updating crontab."
-    crontab /data/sync_cron
+    crontab "$FILE"
 else
     echo "Custom crontab does not exist, skipping crontab update."
 fi
